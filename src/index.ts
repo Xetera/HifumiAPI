@@ -6,21 +6,20 @@ import * as subdomain from 'express-subdomain'
 import * as morgan from 'morgan'
 
 // Get our API routes
-import {endpoint} from './routes/endpoint'
+import {router} from './routes/router'
 import {logger} from "./logger/winston";
-import cors = require('cors');
 
 const app = express();
 
 // Parsers for POST data
-app.use(bodyParser.json());
+app.use(bodyParser.json({limit: '10mb'}));
 app.use(bodyParser.urlencoded({ extended: false }));
 
 // Point static path to dist
 app.use(express.static(path.join(__dirname, 'dist')));
 app.use(morgan('combined'));
 
-app.use(subdomain('api', endpoint));
+app.use(subdomain('api', router));
 
 
 // Catch all other routes and return the index file
@@ -45,5 +44,3 @@ const server = http.createServer(app);
  * Listen on provided port, on all network interfaces.
  */
 server.listen(port, () => logger.info(`API running on localhost:${port}`));
-
-export const secret = process.env['UPLOAD_KEY'];

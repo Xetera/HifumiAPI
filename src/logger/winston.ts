@@ -5,8 +5,9 @@ const level = process.env.LOG_LEVEL || 'debug';
 const alignedWithColorsAndTime = winston.format.combine(
     winston.format.colorize(),
     winston.format.timestamp(),
-    winston.format.align(),
-    winston.format.printf(info => `${info.timestamp} [${info.level}]: ${info.message}`),
+	winston.format.printf(
+    	info => `${info.timestamp} [${info.level}]: ${info.message}`
+	),
 );
 
 export const logger = winston.createLogger({
@@ -18,8 +19,16 @@ export const logger = winston.createLogger({
             maxsize: 1024 * 1024 * 5,
             zippedArchive: true,
         }),
+		new winston.transports.Console({
+    		level: 'error',
+    		format: winston.format.prettyPrint(
+    			o => JSON.stringify(o, null, '\t')
+			)
+		}),
         new winston.transports.Console({
-            format: alignedWithColorsAndTime
+            format: alignedWithColorsAndTime,
+			handleExceptions: true
         })
-    ]
+    ],
+	exitOnError: false
 });
