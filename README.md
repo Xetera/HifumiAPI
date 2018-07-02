@@ -21,8 +21,8 @@ personal use as validating random images can be very tricky / risky
 
 ### Discord-Friendly Image Resizing [Not Implemented]
 
-**Todo**: Quick resizing images to a more discord-friend format to be
-used alongsize of [Hifumi's](https://www.github.com/ilocereal/Hifumi)
+**Todo**: Quickly resizing images to a more discord-friend format to be
+used alongside of [Hifumi's](https://www.github.com/ilocereal/Hifumi)
 **$addmacro** command
 
 ## TODO
