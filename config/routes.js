@@ -27,7 +27,11 @@ module.exports.routes = {
     /**
      * CDN ENDPOINTS
      */
-    'get /cdn/*':'CdnController.serve' ,
+    'get /cdn/*': {
+        controller: 'CdnController',
+        action: 'serve',
+        skipAssets: true
+    },
 
     /**
      * API ENDPOINTS
