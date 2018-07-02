@@ -64,7 +64,7 @@ module.exports.http = {
                 req.url = '/api' + req.url;
             }
             else {
-                req.notFound();
+                return res.notFound();
             }
             next();
         }

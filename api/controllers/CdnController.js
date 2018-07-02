@@ -29,19 +29,35 @@ const isValidMedia = (input) => {
 
 module.exports = {
     serve: async (req, res, next) => {
-        const urlParams = req.url.split('/');
-        const key = req.param('image');
+        const image = req.param('image');
         const user = req.param('user');
-        console.log(key);
-        if (!isValidMedia(key)){
+        sails.log.info(`[CDN]: Got a request for ${user}/${image} from ${req.ip}`);
+        if (!isValidMedia(image)){
             return res.badRequest('Invalid Media Request');
+        }
+
+        const response = await Media.find({
+            urlId: image,
+            user
+        });
+        if (response.length > 1 ){
+            sails.log.warn("Got multiple records for something that should've been unique.");
+        }
+
+        const entry = response[0];
+
+        if (!entry || !entry.key){
+            sails.log.info(`[CDN]: Could not find media ${user}/${image}`);
+            return res.notFound();
         }
 
         const params = {
             Bucket: 'hifumicdn',
-            Key: key
+            Key: entry.key
         };
+
         const stream = s3.downloadStream(params);
+        sails.log.info(`[CDN]: Delivered media successfully.`);
         stream.pipe(res);
 
     }

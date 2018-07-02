@@ -8,54 +8,81 @@ const hasher = new Hashids('hifumi', 8);
  * @help        :: See https://sailsjs.com/docs/concepts/actions
  */
 
-const checkFile = (file, next) => {
-    const fileExtension = file.filename.split('.').pop();
+const checkFile = (file, callback) => {
+    try {
+        sails.helpers.verifier.with({filename: file})
+    } catch (err) {
+        callback(err);
+    }
+    const extension = file.split('.');
 
-
-
+    callback(null, extension.pop());
 };
+
+const generateFilename = (ext) => {
+    const hash = hasher.encode(Date.now());
+    return hash + '.' + ext;
+};
+
 
 module.exports = {
 
     upload: async (req, res) => {
+        sails.log.info(`Got an upload request from ${req.ip}`);
         const user = req.header('user');
-        if (!user) {
-            return res.badRequest({message: "Missing 'user' header", result: "Error", code: 400});
-        }
+        const key = req.header('upload-key');
         const file = req.file('media');
 
-        if (!file) {
+        if (!key || key !== process.env.UPLOAD_KEY){
+            sails.log.info(`Rejected unauthorized upload request.`);
+            return res.forbidden();
+        }
+
+        else if (!user) {
+            sails.log.info(`Rejected upload request due to missing user header.`);
             return res.badRequest({
-                message: "File must be uploaded under a key named 'media'",
-                result: "Error",
-                code: 400
+                message: "Missing 'user' header"
             });
         }
 
-
-        const uploadKey = hasher.encode(Date.now());
-
+        else if (!file) {
+            sails.log.info(`Rejected upload request due to a key mismatch.`);
+            return res.badRequest({
+                message: "File must be uploaded under a key named 'media'",
+            });
+        }
 
         file.upload({
             adapter: require('skipper-s3'),
             key: process.env.BUCKET_KEY, // process.env.BUCKET_KEY,
             secret: process.env.BUCKET_SECRET,
-            bucket: 'hifumicdn',
-            saveAs: checkFile
+            bucket: 'hifumicdn'
         }, async (err, filesUploaded) => {
             if (err) {
-                res.serverError(err);
+                sails.log.error(`[API/Media]: Rejected an upload request\n${err}`);
+                return res.serverError(err);
             }
+            const file = filesUploaded[0];
+            const filename = file.fd;
+            const extension = filename.split('.').pop();
+            const urlId = generateFilename(extension);
             await Media.create({
-                key: 'wae',
+                key: filename,
                 user: user,
-                date: new Date()
+                date: new Date(),
+                urlId: urlId,
+                extension: extension,
+                size: file.extra.size
             });
+            sails.log.info(`Successfully uploaded and saved a ${size / 1000}mb file.`);
             return res.ok({
-                files: filesUploaded,
-                textParams: req.allParams()
+                message: 'Media uploaded',
+                code: 200,
+                id: urlId,
+                size: file.extra.size,
+                user: user,
+                url: `http://cdn.testhifumi.io:1337/${user}/${urlId}`
             })
-        })
+        });
     }
 };
-

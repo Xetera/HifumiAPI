@@ -30,7 +30,7 @@ module.exports.routes = {
     'get /cdn/:user/:image': {
         controller: 'CdnController',
         action: 'serve',
-        skipAssets: true
+        skipAssets: false
     },
 
     /**

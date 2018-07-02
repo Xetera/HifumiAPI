@@ -51,6 +51,6 @@ module.exports.globals = {
 
     sails: true,
 
-
+    validFiles: ['png', 'gif', 'jpeg', 'webm', 'jpg']
 
 };
