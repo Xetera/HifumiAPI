@@ -1,27 +1,45 @@
 # Hifumi API
-
-a [Sails v1](https://sailsjs.com) application
-
-
-### Links
-
-+ [Get started](https://sailsjs.com/get-started)
-+ [Sails framework documentation](https://sailsjs.com/documentation)
-+ [Version notes / upgrading](https://sailsjs.com/documentation/upgrading)
-+ [Deployment tips](https://sailsjs.com/documentation/concepts/deployment)
-+ [Community support options](https://sailsjs.com/support)
-+ [Professional / enterprise options](https://sailsjs.com/enterprise)
+![](https://content.nanobox.io/content/images/2017/06/sailsjs-banner.png)
 
 
-### Version info
+## Modules
 
-This app was originally generated on Sun Jul 01 2018 18:15:58 GMT-0700 (Pacific Daylight Time) using Sails v1.0.2.
+### Image Uploading:
 
-<!-- Internally, Sails used [`sails-generate@1.15.28`](https://github.com/balderdashy/sails-generate/tree/v1.15.28/lib/core-generators/new). -->
+Storing personal images using the uploader API. Currently only for
+personal use as validating random images can be very tricky / risky
 
+####  Details:
+* User makes a request including their username
+* Images are stored in an Amazon S3 Bucket
+* All upload data is saved in a postgresql database
+* Upload keys are stored alongside their hashid counterparts
+* Requests for images by hashids are looked up by their S3 key counterparts
+* Content is piped directly to response without saving a copy
 
+<hr>
 
-<!--
-Note:  Generators are usually run using the globally-installed `sails` CLI (command-line interface).  This CLI version is _environment-specific_ rather than app-specific, thus over time, as a project's dependencies are upgraded or the project is worked on by different developers on different computers using different versions of Node.js, the Sails dependency in its package.json file may differ from the globally-installed Sails CLI release it was originally generated with.  (Be sure to always check out the relevant [upgrading guides](https://sailsjs.com/upgrading) before upgrading the version of Sails used by your app.  If you're stuck, [get help here](https://sailsjs.com/support).)
--->
+### Discord-Friendly Image Resizing [Not Implemented]
 
+**Todo**: Quick resizing images to a more discord-friend format to be
+used alongsize of [Hifumi's](https://www.github.com/ilocereal/Hifumi)
+**$addmacro** command
+
+## TODO
+
+* **Image Processing**
+    * Really only going to be used for resizing
+* **Message Generation**
+    * Markov chains should be used to generate messages that sound
+    like other users
+    * This will most likely require me to keep track of people's messages
+    however I'm hoping that can be done by only saving the state of
+    the markov chain instead rather than the messages the API receives.
+    The ope problem with that approach could be that it could lead
+    to massive single json fields for a user.
+* **Bot Stats**
+    * Obviously being the Hifumi API, this should support an endpoint
+    that lets Hifumi do post request to to keep track of her stats.
+    This will be done later when the website is updated
+
+#### This api is still under heavy construction
