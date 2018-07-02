@@ -27,7 +27,7 @@ module.exports.routes = {
     /**
      * CDN ENDPOINTS
      */
-    'get /cdn/*': {
+    'get /cdn/:user/:image': {
         controller: 'CdnController',
         action: 'serve',
         skipAssets: true
@@ -36,7 +36,7 @@ module.exports.routes = {
     /**
      * API ENDPOINTS
      */
-    'post /cdn/media/upload': 'MediaController.upload'
+    'post /api/media/upload': 'MediaController.upload'
     /***************************************************************************
      *                                                                          *
      * More custom routes here...                                               *

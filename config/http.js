@@ -37,6 +37,7 @@ module.exports.http = {
             'compress',
             'poweredBy',
             'router',
+            'www',
             'favicon',
         ],
 
@@ -55,9 +56,15 @@ module.exports.http = {
         //   return middlewareFn;
         // })(),
         subdomain: function (req, res, next) {
+            const subdomain = req.subdomains[0];
+            if (subdomain === 'cdn'){
                 req.url = '/cdn' + req.url;
-            if (req.subdomains[0] !== 'api'){
-                return;
+            }
+            else if (subdomain === 'api'){
+                req.url = '/api' + req.url;
+            }
+            else {
+                req.notFound();
             }
             next();
         }

@@ -23,6 +23,10 @@ module.exports = {
             type: 'string',
 
             defaultsTo: 'hifumicdn'
+        },
+        extension: {
+            type: 'string',
+            required: true
         }
         //  ╔═╗╔╦╗╔╗ ╔═╗╔╦╗╔═╗
         //  ║╣ ║║║╠╩╗║╣  ║║╚═╗

@@ -8,6 +8,13 @@ const hasher = new Hashids('hifumi', 8);
  * @help        :: See https://sailsjs.com/docs/concepts/actions
  */
 
+const checkFile = (file, next) => {
+    const fileExtension = file.filename.split('.').pop();
+
+
+
+};
+
 module.exports = {
 
     upload: async (req, res) => {
@@ -17,17 +24,24 @@ module.exports = {
         }
         const file = req.file('media');
 
-        if (!file){
-            return res.badRequest({message: "File must be uploaded under a key named 'media'", result: "Error", code: 400});
+        if (!file) {
+            return res.badRequest({
+                message: "File must be uploaded under a key named 'media'",
+                result: "Error",
+                code: 400
+            });
         }
 
+
         const uploadKey = hasher.encode(Date.now());
+
+
         file.upload({
             adapter: require('skipper-s3'),
             key: process.env.BUCKET_KEY, // process.env.BUCKET_KEY,
             secret: process.env.BUCKET_SECRET,
             bucket: 'hifumicdn',
-            saveAs: uploadKey
+            saveAs: checkFile
         }, async (err, filesUploaded) => {
             if (err) {
                 res.serverError(err);

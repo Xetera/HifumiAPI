@@ -30,12 +30,9 @@ const isValidMedia = (input) => {
 module.exports = {
     serve: async (req, res, next) => {
         const urlParams = req.url.split('/');
-        const key = urlParams.pop();
-        const user = urlParams.pop();
+        const key = req.param('image');
+        const user = req.param('user');
         console.log(key);
-        if (key === 'favicon.ico'){
-           return res.send('https://cdn.hifumi.io/hifumi_avatar.png');
-        }
         if (!isValidMedia(key)){
             return res.badRequest('Invalid Media Request');
         }
