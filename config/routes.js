@@ -36,7 +36,8 @@ module.exports.routes = {
     /**
      * API ENDPOINTS
      */
-    'post /api/media/upload': 'MediaController.upload'
+    'post /api/media/upload': 'MediaController.upload',
+    'post /api/media/resize/:size': 'SizeController.resize'
     /***************************************************************************
      *                                                                          *
      * More custom routes here...                                               *

@@ -6,6 +6,9 @@
  */
 
 module.exports = {
+    resize: async (req,res) => {
+        const target = req.params('size');
 
+    }
 };
 
