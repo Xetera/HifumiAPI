@@ -18,6 +18,7 @@
     "sails-hook-orm": "^2.0.0-16",
     "sails-hook-sockets": "^1.4.0",
     "sails-postgresql": "^1.0.1",
+    "sharp": "^0.20.5",
     "skipper-s3": "^0.5.11",
     "winston": "^3.0.0"
   },

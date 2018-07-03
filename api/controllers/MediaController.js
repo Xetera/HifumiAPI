@@ -24,29 +24,28 @@ const generateFilename = (ext) => {
     return hash + '.' + ext;
 };
 
-
 module.exports = {
 
     upload: async (req, res) => {
-        sails.log.info(`Got an upload request from ${req.ip}`);
+        sails.log.info(`[API/Media]: Got an upload request from ${req.ip}`);
         const user = req.header('user');
         const key = req.header('upload-key');
         const file = req.file('media');
 
         if (!key || key !== process.env.UPLOAD_KEY){
-            sails.log.info(`Rejected unauthorized upload request.`);
+            sails.log.info(`[API/Media]: Rejected unauthorized upload request.`);
             return res.forbidden();
         }
 
         else if (!user) {
-            sails.log.info(`Rejected upload request due to missing user header.`);
+            sails.log.info(`[API/Media]: Rejected upload request due to missing user header.`);
             return res.badRequest({
                 message: "Missing 'user' header"
             });
         }
 
         else if (!file) {
-            sails.log.info(`Rejected upload request due to a key mismatch.`);
+            sails.log.info(`[API/Media]: Rejected upload request due to a key mismatch.`);
             return res.badRequest({
                 message: "File must be uploaded under a key named 'media'",
             });
@@ -74,14 +73,20 @@ module.exports = {
                 extension: extension,
                 size: file.extra.size
             });
-            sails.log.info(`Successfully uploaded and saved a ${size / 1000}mb file.`);
+            sails.log.info(`[API/MEDIA]: Successfully uploaded and saved a ${file.extra.size / 1000}kb file.`);
+            let baseUrl;
+            if (process.env.APPLICATION_ENV === 'production'){
+                baseUrl = process.env.CDN_BASE_URL_PROD;
+            } else {
+                baseUrl = process.env.CDN_BASE_URL_DEBUG;
+            }
             return res.ok({
                 message: 'Media uploaded',
                 code: 200,
                 id: urlId,
                 size: file.extra.size,
                 user: user,
-                url: `http://cdn.testhifumi.io:1337/${user}/${urlId}`
+                url: `${baseUrl}/${user}/${urlId}`
             })
         });
     }

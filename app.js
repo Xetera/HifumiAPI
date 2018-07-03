@@ -1,11 +1,14 @@
 require('dotenv').config();
 
-if (!process.env.BUCKET_KEY || !process.env.BUCKET_SECRET){
+if (!process.env.BUCKET_KEY
+    || !process.env.BUCKET_SECRET
+    || !process.env.APPLICATION_ENV){
     throw new Error(
         "Environment variables have not been set up, configure a '.env' file in project root to " +
         "hold the following information:\n" +
-        "   BUCKEY_KEY : name of the s3 bucket that will be used\n" +
-        "   BUCKET_SECRET : s3 bucket secret\n" +
+        "   BUCKEY_KEY      : name of the s3 bucket that will be used\n" +
+        "   BUCKET_SECRET   : s3 bucket secret\n" +
+        "   APPLICATION_ENV : Environment your app is running in" +
         ""
     );
 }
