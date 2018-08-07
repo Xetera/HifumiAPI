@@ -1,0 +1,9 @@
+[include]
+./src/*
+
+[ignore]
+./node_modules/*
+
+[libs]
+node_modules/aws-sdk-flow-decls/aws-sdk.decls.js
+
