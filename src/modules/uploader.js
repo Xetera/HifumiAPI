@@ -3,8 +3,8 @@ import * as aws from 'aws-sdk';
 import Hashids from 'hashids';
 
 const bucket = new aws.S3();
-
 const hash = new Hashids('Hifumi API');
+
 export const uploadFile = (file: Buffer, mime: string) => new Promise((res, rej) => {
 	const key = hash.encode(Date.now());
 	const extension = mime.split('/').pop();
@@ -15,7 +15,7 @@ export const uploadFile = (file: Buffer, mime: string) => new Promise((res, rej)
 		Body: file,
 		ContentType: mime || 'binary',
 	};
-	bucket.putObject(params, (error, data) => {
+	bucket.putObject(params, (error) => {
 		if (error) {
 			return rej(error);
 		}
