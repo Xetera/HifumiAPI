@@ -1,0 +1,48 @@
+type Client {
+    botId: String! @unique
+    id: ID! @unique
+    email: String! @unique
+    token: String!
+    name: String!
+    images: [Media!]!
+}
+
+# type User {
+#     id: ID! @unique
+#     userId: String!
+#     name: String
+# }
+
+type Message {
+    userId: String!
+    guildId: String
+    username: String
+    content: String!
+    createdAt: DateTime!
+    updatedAt: DateTime!
+    channelId: String
+}
+
+type CleverbotDialogue {
+    date: DateTime
+    query: String!
+    reply: String
+}
+
+enum ImageSize {
+    Medium
+    Small
+    Smallest
+    Custom
+}
+
+type Media {
+    id: ID! @unique
+    client: Client!
+    width: Int
+    height: Int
+    size: Int
+    link: String
+}
+
+scalar Upload

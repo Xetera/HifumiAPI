@@ -1,0 +1,19 @@
+# import Post from "./generated/prisma.graphql"
+# import CleverbotDialogue from "./generated/prisma.graphql"
+# import Message from "./generated/prisma.graphql"
+# import Media from "./generated/prisma.graphql"
+# import Upload from "./generated/prisma.graphql"
+
+type Query {
+  generateMessage(channeId: String, guildId: String): String
+}
+
+type Mutation {
+  signup(email: String!, password: String!, name: String!): Client!
+  say(message: String!): CleverbotDialogue,
+  uploadFile(file: Upload!): Media
+  resizeImage(file: Upload!): Media
+}
+
+
+

@@ -1,7 +1,8 @@
 {
 	"watch": [
-		"src/**/*.js"
+		"./src/**/*.js",
+		"./src/**/*.graphql"
 	],
-	"ignore": ["node_modules/*"],
-	"exec": "babel src --out-dir dist & node dist/index.js"
+	"ignore": ["./node_modules/*"],
+	"exec": "babel src --out-dir dist & node -r dotenv/config dist/index.js"
 }

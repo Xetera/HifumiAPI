@@ -1,4 +1,4 @@
-const Nightmare = require('nightmare');
+import Nightmare from 'nightmare';
 
 const nightmare = new Nightmare({ show: true, typeInterval: 1 })
 	.goto('https://www.cleverbot.com/');

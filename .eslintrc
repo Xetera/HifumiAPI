@@ -3,12 +3,14 @@
 	 * Airbnb rules are pretty good but they have some stupid
 	 * parts that I hate working with so this is fine
 	 */
-	"extends": ["airbnb","plugin:flowtype/recommended"],
+	"extends": ["airbnb", "plugin:flowtype/recommended"],
 	"plugins": ["flowtype"],
 	// "ignore": ["node_modules", "flow-typed"],
+
 	"rules": {
 		"indent": ["error", "tab"],
 		"linebreak-style": ["error", "windows"],
-		"no-tabs": "off"
+		"no-tabs": "off",
+		"import/prefer-default-export": "off"
 	}
 }
