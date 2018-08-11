@@ -1,35 +1,26 @@
 type Client {
     # user provided
-    botId: String! @unique
+    botId: String @unique
     email: String! @unique
     name: String!
+    images: [Media!]!
+
     # generated
     id: ID! @unique
     hash: String!
     salt: String!
-    images: [Media!]!
+    createdAt: DateTime!
+    updatedAt: DateTime!
 }
 
-# type User {
-#     id: ID! @unique
-#     userId: String!
-#     name: String
-# }
 
 type Message {
     userId: String!
     guildId: String
     username: String
     content: String!
-    createdAt: DateTime!
-    updatedAt: DateTime!
     channelId: String
-}
-
-type CleverbotDialogue {
-    date: DateTime
-    query: String!
-    reply: String
+    createdAt: DateTime!
 }
 
 type Media {
@@ -37,8 +28,13 @@ type Media {
     client: Client!
     width: Int
     height: Int
+    createdAt: DateTime!
     size: Int
     link: String
 }
 
-
+type CleverbotDialogue {
+    date: DateTime
+    query: String!
+    reply: String
+}

@@ -12,20 +12,23 @@ enum ImageSize {
     Custom
 }
 
-type JWTResponse {
-    clientId: String!
+type AuthResponse {
+    email: String!
+    name: String!
     token: String!
+
+    botId: String
     expiration: DateTime
 }
 
 type Query {
     generateMessage(channeId: String, guildId: String): String
+    auth(email: String! password: String!): AuthResponse
 }
 
 type Mutation {
-    signup(email: String!, password: String!, name: String!): Client!
-    auth(name: String! password: String!): JWTResponse
-    # say(message: String!): CleverbotDialogue
+    signup(email: String!, password: String!, name: String!): AuthResponse!
+    say(message: String!): CleverbotDialogue
     uploadFile(file: Upload!): Media
     resize(file: Upload!, size: ImageSize): Media
 }
