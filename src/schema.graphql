@@ -30,7 +30,7 @@ type Mutation {
     signup(email: String!, password: String!, name: String!): AuthResponse!
     say(message: String!): CleverbotDialogue
     uploadFile(file: Upload!): Media
-    resize(file: Upload!, size: ImageSize): Media
+    resize(link: String, file: Upload, size: ImageSize): Media
 }
 
 

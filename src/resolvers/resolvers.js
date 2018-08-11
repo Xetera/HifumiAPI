@@ -5,6 +5,7 @@ import { cleverbot } from './mutations/cleverbot';
 import { resizing } from './mutations/resizing';
 import { messages } from './queries/messages';
 import { authQuery } from './queries/authQuery';
+import { uploader } from './mutations/graphqlUploader';
 
 module.exports = {
 	Query: {
@@ -15,6 +16,7 @@ module.exports = {
 		...authMutation,
 		...cleverbot,
 		...resizing,
+		...uploader,
 	},
 	Upload: GraphQLUpload,
 };

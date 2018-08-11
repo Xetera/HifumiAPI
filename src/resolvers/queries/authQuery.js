@@ -1,5 +1,5 @@
 import bcrypt from 'bcryptjs';
-import { AuthError, signJwt } from '../../utils';
+import { signJwt } from '../../utils';
 
 export const authQuery = {
 	async auth(parent, { email, password }, ctx) {

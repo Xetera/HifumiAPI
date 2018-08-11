@@ -1,6 +1,7 @@
 // @flow
-import * as GM from 'gm';
+import GM from 'gm';
 import jwt from 'jsonwebtoken';
+import axios from 'axios';
 
 export const gm = GM.subClass({ imageMagick: true });
 
@@ -23,9 +24,14 @@ export interface JwtResponse {
 	exp: number;
 }
 
-export const fetchImageMedatada = (buffer: Buffer) => new Promise((resolve, reject) => {
-	gm(buffer)
-		.identify();
+export const fetchImageMetadata = (buffer: Buffer) => new Promise((resolve, reject) => {
+	console.log(buffer);
+	gm(buffer).identify({ bufferStream: true }, (err, data) => {
+		if (err) {
+			reject(err);
+		}
+		resolve(data);
+	});
 });
 
 export const signJwt = async (payload: Object): Promise<JwtResponse> => {
@@ -35,4 +41,10 @@ export const signJwt = async (payload: Object): Promise<JwtResponse> => {
 	);
 	const { exp } = await jwt.decode(token);
 	return { token, exp };
+};
+
+
+export const fetchUrlBuffer = async (url: string): Promise<Buffer> => {
+	const response = await axios.get(url, { responseType: 'arraybuffer' });
+	return response.data;
 };

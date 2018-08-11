@@ -1,5 +1,5 @@
-# source: http://localhost:4466
-# timestamp: Fri Aug 10 2018 15:18:13 GMT-0700 (Pacific Daylight Time)
+# source: http://localhost:4466/graphql
+# timestamp: Sat Aug 11 2018 04:12:46 GMT-0700 (Pacific Daylight Time)
 
 type AggregateCleverbotDialogue {
   count: Int!
@@ -233,12 +233,15 @@ input CleverbotDialogueWhereInput {
 }
 
 type Client implements Node {
-  botId: String!
-  id: ID!
+  botId: String
   email: String!
-  token: String!
   name: String!
   images(where: MediaWhereInput, orderBy: MediaOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Media!]
+  id: ID!
+  hash: String!
+  salt: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 """A connection to a list of items."""
@@ -252,10 +255,11 @@ type ClientConnection {
 }
 
 input ClientCreateInput {
-  botId: String!
+  botId: String
   email: String!
-  token: String!
   name: String!
+  hash: String!
+  salt: String!
   images: MediaCreateManyWithoutClientInput
 }
 
@@ -265,10 +269,11 @@ input ClientCreateOneWithoutImagesInput {
 }
 
 input ClientCreateWithoutImagesInput {
-  botId: String!
+  botId: String
   email: String!
-  token: String!
   name: String!
+  hash: String!
+  salt: String!
 }
 
 """An edge in a connection."""
@@ -283,26 +288,31 @@ type ClientEdge {
 enum ClientOrderByInput {
   botId_ASC
   botId_DESC
-  id_ASC
-  id_DESC
   email_ASC
   email_DESC
-  token_ASC
-  token_DESC
   name_ASC
   name_DESC
-  updatedAt_ASC
-  updatedAt_DESC
+  id_ASC
+  id_DESC
+  hash_ASC
+  hash_DESC
+  salt_ASC
+  salt_DESC
   createdAt_ASC
   createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
 }
 
 type ClientPreviousValues {
-  botId: String!
-  id: ID!
+  botId: String
   email: String!
-  token: String!
   name: String!
+  id: ID!
+  hash: String!
+  salt: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 type ClientSubscriptionPayload {
@@ -347,8 +357,9 @@ input ClientSubscriptionWhereInput {
 input ClientUpdateInput {
   botId: String
   email: String
-  token: String
   name: String
+  hash: String
+  salt: String
   images: MediaUpdateManyWithoutClientInput
 }
 
@@ -363,8 +374,9 @@ input ClientUpdateOneWithoutImagesInput {
 input ClientUpdateWithoutImagesDataInput {
   botId: String
   email: String
-  token: String
   name: String
+  hash: String
+  salt: String
 }
 
 input ClientUpsertWithoutImagesInput {
@@ -421,46 +433,6 @@ input ClientWhereInput {
 
   """All values not ending with the given string."""
   botId_not_ends_with: String
-  id: ID
-
-  """All values that are not equal to given value."""
-  id_not: ID
-
-  """All values that are contained in given list."""
-  id_in: [ID!]
-
-  """All values that are not contained in given list."""
-  id_not_in: [ID!]
-
-  """All values less than the given value."""
-  id_lt: ID
-
-  """All values less than or equal the given value."""
-  id_lte: ID
-
-  """All values greater than the given value."""
-  id_gt: ID
-
-  """All values greater than or equal the given value."""
-  id_gte: ID
-
-  """All values containing the given string."""
-  id_contains: ID
-
-  """All values not containing the given string."""
-  id_not_contains: ID
-
-  """All values starting with the given string."""
-  id_starts_with: ID
-
-  """All values not starting with the given string."""
-  id_not_starts_with: ID
-
-  """All values ending with the given string."""
-  id_ends_with: ID
-
-  """All values not ending with the given string."""
-  id_not_ends_with: ID
   email: String
 
   """All values that are not equal to given value."""
@@ -501,46 +473,6 @@ input ClientWhereInput {
 
   """All values not ending with the given string."""
   email_not_ends_with: String
-  token: String
-
-  """All values that are not equal to given value."""
-  token_not: String
-
-  """All values that are contained in given list."""
-  token_in: [String!]
-
-  """All values that are not contained in given list."""
-  token_not_in: [String!]
-
-  """All values less than the given value."""
-  token_lt: String
-
-  """All values less than or equal the given value."""
-  token_lte: String
-
-  """All values greater than the given value."""
-  token_gt: String
-
-  """All values greater than or equal the given value."""
-  token_gte: String
-
-  """All values containing the given string."""
-  token_contains: String
-
-  """All values not containing the given string."""
-  token_not_contains: String
-
-  """All values starting with the given string."""
-  token_starts_with: String
-
-  """All values not starting with the given string."""
-  token_not_starts_with: String
-
-  """All values ending with the given string."""
-  token_ends_with: String
-
-  """All values not ending with the given string."""
-  token_not_ends_with: String
   name: String
 
   """All values that are not equal to given value."""
@@ -581,6 +513,170 @@ input ClientWhereInput {
 
   """All values not ending with the given string."""
   name_not_ends_with: String
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  hash: String
+
+  """All values that are not equal to given value."""
+  hash_not: String
+
+  """All values that are contained in given list."""
+  hash_in: [String!]
+
+  """All values that are not contained in given list."""
+  hash_not_in: [String!]
+
+  """All values less than the given value."""
+  hash_lt: String
+
+  """All values less than or equal the given value."""
+  hash_lte: String
+
+  """All values greater than the given value."""
+  hash_gt: String
+
+  """All values greater than or equal the given value."""
+  hash_gte: String
+
+  """All values containing the given string."""
+  hash_contains: String
+
+  """All values not containing the given string."""
+  hash_not_contains: String
+
+  """All values starting with the given string."""
+  hash_starts_with: String
+
+  """All values not starting with the given string."""
+  hash_not_starts_with: String
+
+  """All values ending with the given string."""
+  hash_ends_with: String
+
+  """All values not ending with the given string."""
+  hash_not_ends_with: String
+  salt: String
+
+  """All values that are not equal to given value."""
+  salt_not: String
+
+  """All values that are contained in given list."""
+  salt_in: [String!]
+
+  """All values that are not contained in given list."""
+  salt_not_in: [String!]
+
+  """All values less than the given value."""
+  salt_lt: String
+
+  """All values less than or equal the given value."""
+  salt_lte: String
+
+  """All values greater than the given value."""
+  salt_gt: String
+
+  """All values greater than or equal the given value."""
+  salt_gte: String
+
+  """All values containing the given string."""
+  salt_contains: String
+
+  """All values not containing the given string."""
+  salt_not_contains: String
+
+  """All values starting with the given string."""
+  salt_starts_with: String
+
+  """All values not starting with the given string."""
+  salt_not_starts_with: String
+
+  """All values ending with the given string."""
+  salt_ends_with: String
+
+  """All values not ending with the given string."""
+  salt_not_ends_with: String
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
   images_every: MediaWhereInput
   images_some: MediaWhereInput
   images_none: MediaWhereInput
@@ -588,8 +684,8 @@ input ClientWhereInput {
 
 input ClientWhereUniqueInput {
   botId: String
-  id: ID
   email: String
+  id: ID
 }
 
 scalar DateTime
@@ -605,6 +701,7 @@ type Media implements Node {
   client(where: ClientWhereInput): Client!
   width: Int
   height: Int
+  createdAt: DateTime!
   size: Int
   link: String
 }
@@ -655,20 +752,21 @@ enum MediaOrderByInput {
   width_DESC
   height_ASC
   height_DESC
+  createdAt_ASC
+  createdAt_DESC
   size_ASC
   size_DESC
   link_ASC
   link_DESC
   updatedAt_ASC
   updatedAt_DESC
-  createdAt_ASC
-  createdAt_DESC
 }
 
 type MediaPreviousValues {
   id: ID!
   width: Int
   height: Int
+  createdAt: DateTime!
   size: Int
   link: String
 }
@@ -840,6 +938,28 @@ input MediaWhereInput {
 
   """All values greater than or equal the given value."""
   height_gte: Int
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
   size: Int
 
   """All values that are not equal to given value."""
@@ -914,9 +1034,8 @@ type Message {
   guildId: String
   username: String
   content: String!
-  createdAt: DateTime!
-  updatedAt: DateTime!
   channelId: String
+  createdAt: DateTime!
 }
 
 """A connection to a list of items."""
@@ -955,14 +1074,14 @@ enum MessageOrderByInput {
   username_DESC
   content_ASC
   content_DESC
-  createdAt_ASC
-  createdAt_DESC
-  updatedAt_ASC
-  updatedAt_DESC
   channelId_ASC
   channelId_DESC
+  createdAt_ASC
+  createdAt_DESC
   id_ASC
   id_DESC
+  updatedAt_ASC
+  updatedAt_DESC
 }
 
 type MessagePreviousValues {
@@ -970,9 +1089,8 @@ type MessagePreviousValues {
   guildId: String
   username: String
   content: String!
-  createdAt: DateTime!
-  updatedAt: DateTime!
   channelId: String
+  createdAt: DateTime!
 }
 
 type MessageSubscriptionPayload {
@@ -1191,50 +1309,6 @@ input MessageWhereInput {
 
   """All values not ending with the given string."""
   content_not_ends_with: String
-  createdAt: DateTime
-
-  """All values that are not equal to given value."""
-  createdAt_not: DateTime
-
-  """All values that are contained in given list."""
-  createdAt_in: [DateTime!]
-
-  """All values that are not contained in given list."""
-  createdAt_not_in: [DateTime!]
-
-  """All values less than the given value."""
-  createdAt_lt: DateTime
-
-  """All values less than or equal the given value."""
-  createdAt_lte: DateTime
-
-  """All values greater than the given value."""
-  createdAt_gt: DateTime
-
-  """All values greater than or equal the given value."""
-  createdAt_gte: DateTime
-  updatedAt: DateTime
-
-  """All values that are not equal to given value."""
-  updatedAt_not: DateTime
-
-  """All values that are contained in given list."""
-  updatedAt_in: [DateTime!]
-
-  """All values that are not contained in given list."""
-  updatedAt_not_in: [DateTime!]
-
-  """All values less than the given value."""
-  updatedAt_lt: DateTime
-
-  """All values less than or equal the given value."""
-  updatedAt_lte: DateTime
-
-  """All values greater than the given value."""
-  updatedAt_gt: DateTime
-
-  """All values greater than or equal the given value."""
-  updatedAt_gte: DateTime
   channelId: String
 
   """All values that are not equal to given value."""
@@ -1275,13 +1349,35 @@ input MessageWhereInput {
 
   """All values not ending with the given string."""
   channelId_not_ends_with: String
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
 }
 
 type Mutation {
   createClient(data: ClientCreateInput!): Client!
   createMessage(data: MessageCreateInput!): Message!
-  createCleverbotDialogue(data: CleverbotDialogueCreateInput!): CleverbotDialogue!
   createMedia(data: MediaCreateInput!): Media!
+  createCleverbotDialogue(data: CleverbotDialogueCreateInput!): CleverbotDialogue!
   updateClient(data: ClientUpdateInput!, where: ClientWhereUniqueInput!): Client
   updateMedia(data: MediaUpdateInput!, where: MediaWhereUniqueInput!): Media
   deleteClient(where: ClientWhereUniqueInput!): Client
@@ -1290,12 +1386,12 @@ type Mutation {
   upsertMedia(where: MediaWhereUniqueInput!, create: MediaCreateInput!, update: MediaUpdateInput!): Media!
   updateManyClients(data: ClientUpdateInput!, where: ClientWhereInput): BatchPayload!
   updateManyMessages(data: MessageUpdateInput!, where: MessageWhereInput): BatchPayload!
-  updateManyCleverbotDialogues(data: CleverbotDialogueUpdateInput!, where: CleverbotDialogueWhereInput): BatchPayload!
   updateManyMedias(data: MediaUpdateInput!, where: MediaWhereInput): BatchPayload!
+  updateManyCleverbotDialogues(data: CleverbotDialogueUpdateInput!, where: CleverbotDialogueWhereInput): BatchPayload!
   deleteManyClients(where: ClientWhereInput): BatchPayload!
   deleteManyMessages(where: MessageWhereInput): BatchPayload!
-  deleteManyCleverbotDialogues(where: CleverbotDialogueWhereInput): BatchPayload!
   deleteManyMedias(where: MediaWhereInput): BatchPayload!
+  deleteManyCleverbotDialogues(where: CleverbotDialogueWhereInput): BatchPayload!
 }
 
 enum MutationType {
@@ -1328,14 +1424,14 @@ type PageInfo {
 type Query {
   clients(where: ClientWhereInput, orderBy: ClientOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Client]!
   messages(where: MessageWhereInput, orderBy: MessageOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Message]!
-  cleverbotDialogues(where: CleverbotDialogueWhereInput, orderBy: CleverbotDialogueOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [CleverbotDialogue]!
   medias(where: MediaWhereInput, orderBy: MediaOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Media]!
+  cleverbotDialogues(where: CleverbotDialogueWhereInput, orderBy: CleverbotDialogueOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [CleverbotDialogue]!
   client(where: ClientWhereUniqueInput!): Client
   media(where: MediaWhereUniqueInput!): Media
   clientsConnection(where: ClientWhereInput, orderBy: ClientOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ClientConnection!
   messagesConnection(where: MessageWhereInput, orderBy: MessageOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): MessageConnection!
-  cleverbotDialoguesConnection(where: CleverbotDialogueWhereInput, orderBy: CleverbotDialogueOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CleverbotDialogueConnection!
   mediasConnection(where: MediaWhereInput, orderBy: MediaOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): MediaConnection!
+  cleverbotDialoguesConnection(where: CleverbotDialogueWhereInput, orderBy: CleverbotDialogueOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CleverbotDialogueConnection!
 
   """Fetches an object given its ID"""
   node(
@@ -1347,6 +1443,6 @@ type Query {
 type Subscription {
   client(where: ClientSubscriptionWhereInput): ClientSubscriptionPayload
   message(where: MessageSubscriptionWhereInput): MessageSubscriptionPayload
-  cleverbotDialogue(where: CleverbotDialogueSubscriptionWhereInput): CleverbotDialogueSubscriptionPayload
   media(where: MediaSubscriptionWhereInput): MediaSubscriptionPayload
+  cleverbotDialogue(where: CleverbotDialogueSubscriptionWhereInput): CleverbotDialogueSubscriptionPayload
 }

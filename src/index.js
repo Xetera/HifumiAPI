@@ -16,6 +16,7 @@ const db = new Prisma({
 const server = new GraphQLServer({
 	typeDefs: './src/schema.graphql',
 	resolvers,
+	endpoint: process.env.GRAPHQL_ENDPOINT,
 	middlewares: [protectedEndpoints],
 	context: req => ({ ...req, db }),
 });

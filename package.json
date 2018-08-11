@@ -1,5 +1,6 @@
 {
 	"name": "HifumiAPI",
+	"version": "0.1.0",
 	"scripts": {
 		"start": "nodemon",
 		"playground": "graphql playground",
@@ -7,6 +8,7 @@
 	},
 	"dependencies": {
 		"apollo-upload-server": "^6.0.0-alpha.1",
+		"axios": "^0.18.0",
 		"babel-core": "^6.26.3",
 		"bcryptjs": "^2.4.3",
 		"gm": "^1.23.1",
