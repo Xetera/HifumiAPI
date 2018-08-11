@@ -1,4 +1,5 @@
 import * as jwt from 'jsonwebtoken';
+import { AuthError } from '../utils';
 
 const isLoggedIn = async (resolve, parent, args, ctx) => {
 	// Include your agent code as Authorization: <token> header.
@@ -8,10 +9,16 @@ const isLoggedIn = async (resolve, parent, args, ctx) => {
 		throw new Error('Missing Authorization header');
 	}
 
-	const auth = jwt.verify(token, process.env.JWT_SECRET);
+	let auth = token.replace('Bearer ', '');
+
+	try {
+		auth = await jwt.verify(token, process.env.JWT_SECRET);
+	} catch (err) {
+		throw new Error('Invalid Authorization header');
+	}
 
 	if (!auth) {
-		throw new Error('Unauthorized');
+		throw new AuthError();
 	}
 
 	return resolve();
