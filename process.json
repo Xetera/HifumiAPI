@@ -2,7 +2,7 @@
 	"apps": [
 		{
 			"name": "HifumiAPI",
-			"script": "node/index.js",
+			"script": "node dist/index.js",
 			"watch": true,
 			"log_date_format": "YYYY-MM-DD HH:mm Z",
 		}

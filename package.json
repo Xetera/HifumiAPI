@@ -8,6 +8,7 @@
 	"dependencies": {
 		"apollo-upload-server": "^6.0.0-alpha.1",
 		"babel-core": "^6.26.3",
+		"bcrypt": "^3.0.0",
 		"gm": "^1.23.1",
 		"graphql-middleware": "^1.6.5",
 		"graphql-yoga": "1.15.1",
