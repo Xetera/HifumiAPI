@@ -1,6 +1,6 @@
 import { resize } from '../../modules/image';
 
-const resizing = {
+export const resizing = {
 	resize: async (_, { size }, ctx, info) => {
 		const image = await resize(size);
 
