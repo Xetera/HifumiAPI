@@ -1,9 +1,12 @@
 type Client {
+    # user provided
     botId: String! @unique
-    id: ID! @unique
     email: String! @unique
-    token: String!
     name: String!
+    # generated
+    id: ID! @unique
+    hash: String!
+    salt: String!
     images: [Media!]!
 }
 
@@ -29,13 +32,6 @@ type CleverbotDialogue {
     reply: String
 }
 
-enum ImageSize {
-    Medium
-    Small
-    Smallest
-    Custom
-}
-
 type Media {
     id: ID! @unique
     client: Client!
@@ -45,4 +41,4 @@ type Media {
     link: String
 }
 
-scalar Upload
+

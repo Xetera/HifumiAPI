@@ -2,17 +2,32 @@
 # import CleverbotDialogue from "./generated/prisma.graphql"
 # import Message from "./generated/prisma.graphql"
 # import Media from "./generated/prisma.graphql"
-# import Upload from "./generated/prisma.graphql"
+
+scalar Upload
+
+enum ImageSize {
+    Medium
+    Small
+    Smallest
+    Custom
+}
+
+type JWTResponse {
+    clientId: String!
+    token: String!
+    expiration: DateTime
+}
 
 type Query {
-  generateMessage(channeId: String, guildId: String): String
+    generateMessage(channeId: String, guildId: String): String
 }
 
 type Mutation {
-  signup(email: String!, password: String!, name: String!): Client!
-  say(message: String!): CleverbotDialogue,
-  uploadFile(file: Upload!): Media
-  resizeImage(file: Upload!): Media
+    signup(email: String!, password: String!, name: String!): Client!
+    auth(name: String! password: String!): JWTResponse
+    # say(message: String!): CleverbotDialogue
+    uploadFile(file: Upload!): Media
+    resize(file: Upload!, size: ImageSize): Media
 }
 
 
