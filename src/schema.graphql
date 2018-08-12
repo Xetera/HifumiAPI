@@ -12,6 +12,24 @@ enum ImageSize {
     Custom
 }
 
+type ProvidedMedia {
+    link: String
+    client: Client!
+    width: Int!
+    height: Int!
+    size: Int
+    format: String
+}
+
+type ResizeResponse {
+    # Something where I can omit things like
+    # id, or createdAt since I won't be saving
+    # that media to the database
+    before: ProvidedMedia
+    after: Media
+}
+
+
 type AuthResponse {
     email: String!
     name: String!
@@ -30,7 +48,7 @@ type Mutation {
     signup(email: String!, password: String!, name: String!): AuthResponse!
     say(message: String!): CleverbotDialogue
     uploadFile(file: Upload!): Media
-    resize(link: String, file: Upload, size: ImageSize): Media
+    resize(link: String, file: Upload, size: ImageSize): ResizeResponse!
 }
 
 

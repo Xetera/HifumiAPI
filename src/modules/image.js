@@ -1,7 +1,7 @@
 // @flow
 import sharp from 'sharp';
 
-const sizing = {
+export const sizing = {
 	Medium: 250,
 	Small: 200,
 	Smallest: 150,

@@ -20,10 +20,10 @@ const isLoggedIn = async (resolve, parent, args, ctx) => {
 		throw new Error('Invalid Authorization header');
 	}
 
+	ctx.jwt = auth;
 	if (!auth) {
 		throw new AuthError();
 	}
-
 	return resolve();
 };
 
@@ -37,6 +37,7 @@ const isOwner = async (resolve, parent, args, ctx) => {
 	return resolve();
 };
 
+// TODO: Rate Limiting
 export const protectedEndpoints = {
 	Query: {
 	},

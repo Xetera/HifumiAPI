@@ -1,5 +1,5 @@
 # source: http://localhost:4466/graphql
-# timestamp: Sat Aug 11 2018 04:12:46 GMT-0700 (Pacific Daylight Time)
+# timestamp: Sat Aug 11 2018 20:14:06 GMT-0700 (Pacific Daylight Time)
 
 type AggregateCleverbotDialogue {
   count: Int!
@@ -260,20 +260,7 @@ input ClientCreateInput {
   name: String!
   hash: String!
   salt: String!
-  images: MediaCreateManyWithoutClientInput
-}
-
-input ClientCreateOneWithoutImagesInput {
-  create: ClientCreateWithoutImagesInput
-  connect: ClientWhereUniqueInput
-}
-
-input ClientCreateWithoutImagesInput {
-  botId: String
-  email: String!
-  name: String!
-  hash: String!
-  salt: String!
+  images: MediaCreateManyInput
 }
 
 """An edge in a connection."""
@@ -360,28 +347,7 @@ input ClientUpdateInput {
   name: String
   hash: String
   salt: String
-  images: MediaUpdateManyWithoutClientInput
-}
-
-input ClientUpdateOneWithoutImagesInput {
-  create: ClientCreateWithoutImagesInput
-  connect: ClientWhereUniqueInput
-  delete: Boolean
-  update: ClientUpdateWithoutImagesDataInput
-  upsert: ClientUpsertWithoutImagesInput
-}
-
-input ClientUpdateWithoutImagesDataInput {
-  botId: String
-  email: String
-  name: String
-  hash: String
-  salt: String
-}
-
-input ClientUpsertWithoutImagesInput {
-  update: ClientUpdateWithoutImagesDataInput!
-  create: ClientCreateWithoutImagesInput!
+  images: MediaUpdateManyInput
 }
 
 input ClientWhereInput {
@@ -698,12 +664,12 @@ scalar Long
 
 type Media implements Node {
   id: ID!
-  client(where: ClientWhereInput): Client!
   width: Int
   height: Int
   createdAt: DateTime!
   size: Int
   link: String
+  format: String
 }
 
 """A connection to a list of items."""
@@ -721,19 +687,12 @@ input MediaCreateInput {
   height: Int
   size: Int
   link: String
-  client: ClientCreateOneWithoutImagesInput!
+  format: String
 }
 
-input MediaCreateManyWithoutClientInput {
-  create: [MediaCreateWithoutClientInput!]
+input MediaCreateManyInput {
+  create: [MediaCreateInput!]
   connect: [MediaWhereUniqueInput!]
-}
-
-input MediaCreateWithoutClientInput {
-  width: Int
-  height: Int
-  size: Int
-  link: String
 }
 
 """An edge in a connection."""
@@ -758,6 +717,8 @@ enum MediaOrderByInput {
   size_DESC
   link_ASC
   link_DESC
+  format_ASC
+  format_DESC
   updatedAt_ASC
   updatedAt_DESC
 }
@@ -769,6 +730,7 @@ type MediaPreviousValues {
   createdAt: DateTime!
   size: Int
   link: String
+  format: String
 }
 
 type MediaSubscriptionPayload {
@@ -810,39 +772,40 @@ input MediaSubscriptionWhereInput {
   node: MediaWhereInput
 }
 
+input MediaUpdateDataInput {
+  width: Int
+  height: Int
+  size: Int
+  link: String
+  format: String
+}
+
 input MediaUpdateInput {
   width: Int
   height: Int
   size: Int
   link: String
-  client: ClientUpdateOneWithoutImagesInput
+  format: String
 }
 
-input MediaUpdateManyWithoutClientInput {
-  create: [MediaCreateWithoutClientInput!]
+input MediaUpdateManyInput {
+  create: [MediaCreateInput!]
   connect: [MediaWhereUniqueInput!]
   disconnect: [MediaWhereUniqueInput!]
   delete: [MediaWhereUniqueInput!]
-  update: [MediaUpdateWithWhereUniqueWithoutClientInput!]
-  upsert: [MediaUpsertWithWhereUniqueWithoutClientInput!]
+  update: [MediaUpdateWithWhereUniqueNestedInput!]
+  upsert: [MediaUpsertWithWhereUniqueNestedInput!]
 }
 
-input MediaUpdateWithoutClientDataInput {
-  width: Int
-  height: Int
-  size: Int
-  link: String
-}
-
-input MediaUpdateWithWhereUniqueWithoutClientInput {
+input MediaUpdateWithWhereUniqueNestedInput {
   where: MediaWhereUniqueInput!
-  data: MediaUpdateWithoutClientDataInput!
+  data: MediaUpdateDataInput!
 }
 
-input MediaUpsertWithWhereUniqueWithoutClientInput {
+input MediaUpsertWithWhereUniqueNestedInput {
   where: MediaWhereUniqueInput!
-  update: MediaUpdateWithoutClientDataInput!
-  create: MediaCreateWithoutClientInput!
+  update: MediaUpdateDataInput!
+  create: MediaCreateInput!
 }
 
 input MediaWhereInput {
@@ -1022,7 +985,46 @@ input MediaWhereInput {
 
   """All values not ending with the given string."""
   link_not_ends_with: String
-  client: ClientWhereInput
+  format: String
+
+  """All values that are not equal to given value."""
+  format_not: String
+
+  """All values that are contained in given list."""
+  format_in: [String!]
+
+  """All values that are not contained in given list."""
+  format_not_in: [String!]
+
+  """All values less than the given value."""
+  format_lt: String
+
+  """All values less than or equal the given value."""
+  format_lte: String
+
+  """All values greater than the given value."""
+  format_gt: String
+
+  """All values greater than or equal the given value."""
+  format_gte: String
+
+  """All values containing the given string."""
+  format_contains: String
+
+  """All values not containing the given string."""
+  format_not_contains: String
+
+  """All values starting with the given string."""
+  format_starts_with: String
+
+  """All values not starting with the given string."""
+  format_not_starts_with: String
+
+  """All values ending with the given string."""
+  format_ends_with: String
+
+  """All values not ending with the given string."""
+  format_not_ends_with: String
 }
 
 input MediaWhereUniqueInput {

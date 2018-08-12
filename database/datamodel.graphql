@@ -3,7 +3,7 @@ type Client {
     botId: String @unique
     email: String! @unique
     name: String!
-    images: [Media!]!
+    images: [Media!]! @relation(name: "MediaByUser", onDelete: CASCADE)
 
     # generated
     id: ID! @unique
@@ -25,13 +25,14 @@ type Message {
 
 type Media {
     id: ID! @unique
-    client: Client!
     width: Int
     height: Int
     createdAt: DateTime!
     size: Int
     link: String
+    format: String
 }
+
 
 type CleverbotDialogue {
     date: DateTime
