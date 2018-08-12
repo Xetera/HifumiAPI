@@ -1,9 +1,6 @@
 // @flow
-import GM from 'gm';
 import jwt from 'jsonwebtoken';
 import axios from 'axios';
-
-export const gm = GM.subClass({ imageMagick: true });
 
 export class AuthError extends Error {
 	status: number;
@@ -14,25 +11,11 @@ export class AuthError extends Error {
 	}
 }
 
-interface MediaMetadata {
-	width: number;
-	height: number;
-}
-
 export interface JwtResponse {
 	token: string;
 	exp: number;
 }
 
-export const fetchImageMetadata = (buffer: Buffer) => new Promise((resolve, reject) => {
-	console.log(buffer);
-	gm(buffer).identify({ bufferStream: true }, (err, data) => {
-		if (err) {
-			reject(err);
-		}
-		resolve(data);
-	});
-});
 
 export const signJwt = async (payload: Object): Promise<JwtResponse> => {
 	const expiry = process.env.TOKEN_EXPIRE || '10d';

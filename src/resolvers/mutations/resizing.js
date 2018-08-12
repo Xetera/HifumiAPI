@@ -1,6 +1,7 @@
 // @flow
-import { resize } from '../../modules/image';
-import { fetchImageMetadata, fetchUrlBuffer } from '../../utils';
+import { fetchImageMetadata, resize } from '../../modules/image';
+import { fetchUrlBuffer } from '../../utils';
+import { uploadFile } from '../../modules/uploader';
 
 
 export const resizing = {
@@ -18,9 +19,16 @@ export const resizing = {
 			throw new Error('Either an image link or a file is required for resizing');
 		}
 
-		const metadata = await fetchImageMetadata(bufferTarget);
-		console.log(metadata);
-		const image = await resize(bufferTarget, size || 'SMALL');
+		const [metadata, image] = await Promise.all([
+			fetchImageMetadata(bufferTarget),
+			resize(bufferTarget, size || 'SMALL'),
+		]);
+		console.log(metadata, image)
+		const upload =  await uploadFile(image, metadata.format);
+		return {
+			link: `http://cdn.hifumi.io/${upload}`,
+			...metadata
+		}
 		// uploadFile(image);
 	},
 };
