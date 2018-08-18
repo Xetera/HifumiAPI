@@ -3,6 +3,8 @@
 	"version": "0.1.0",
 	"scripts": {
 		"start": "nodemon",
+		"server": "node -r dotenv/config dist/index.js",
+		"build": "babel src --out-dir dist",
 		"playground": "graphql playground",
 		"dev": "npm-run-all --parallel start playground"
 	},
