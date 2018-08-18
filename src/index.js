@@ -24,7 +24,7 @@ const server = new GraphQLServer({
 
 uploaderService(server.express);
 deployService(server.express);
-server.start(() => {
+server.start({ port: process.env.SERVER_PORT }, () => {
 	console.log('Server started');
 	console.log('Server is running on http://localhost:4000');
 });

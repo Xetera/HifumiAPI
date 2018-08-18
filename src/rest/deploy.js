@@ -15,9 +15,10 @@ export const deployService = (app) => {
 			return res.status(500).end();
 		}
 		const child = spawn('bash', [pathToScript]);
-		child.stderr.on('data', (data) => {
-			console.log(data.toString());
-		});
+
+		child.stdout.on('data', out => console.error(out.toString()));
+		child.stderr.on('data', err => console.error(err.toString()));
+		child.on('close', () => console.log('connection closed'));
 		return res.status(200).end();
 	});
 };
