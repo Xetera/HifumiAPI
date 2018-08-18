@@ -1,5 +1,5 @@
 // @flow
-const { spawn } = require('child_process');
+const { exec } = require('child_process');
 
 
 export const deployService = (app) => {
@@ -14,11 +14,12 @@ export const deployService = (app) => {
 		if (!pathToScript) {
 			return res.status(500).end();
 		}
-		const child = spawn('bash', [pathToScript]);
+		const child = exec(`bash ${pathToScript}`, console.log);
 
-		child.stdout.on('data', out => console.error(out.toString()));
-		child.stderr.on('data', err => console.error(err.toString()));
-		child.on('close', () => console.log('connection closed'));
+		// child.stdout.on('data', out => console.error(out.toString()));
+		// child.stderr.on('data', err => console.error(err.toString()));
+		// child.on('close', () => console.log('connection closed'));
+		// child.on('exit', () => console.log('connection closed'));
 		return res.status(200).end();
 	});
 };
