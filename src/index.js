@@ -4,6 +4,7 @@ import { Prisma } from 'prisma-binding';
 import { uploaderService } from './rest/uploader';
 import resolvers from './resolvers/resolvers';
 import { protectedEndpoints } from './modules/auth';
+import { deployService } from './rest/deploy';
 
 const db = new Prisma({
 	typeDefs: 'src/generated/prisma.graphql', // the auto-generated GraphQL schema of the Prisma API
@@ -22,8 +23,8 @@ const server = new GraphQLServer({
 });
 
 uploaderService(server.express);
-
-server.start(() => {
+deployService(server.express);
+server.start({ port: process.env.SERVER_PORT }, () => {
 	console.log('Server started');
 	console.log('Server is running on http://localhost:4000');
 });

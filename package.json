@@ -3,6 +3,8 @@
 	"version": "0.1.0",
 	"scripts": {
 		"start": "nodemon",
+		"server": "node -r dotenv/config dist/index.js",
+		"build": "babel src --out-dir dist",
 		"playground": "graphql playground",
 		"dev": "npm-run-all --parallel start playground"
 	},
@@ -25,6 +27,7 @@
 		"simple-markov": "^1.0.2"
 	},
 	"devDependencies": {
+		"@types/node": "^10.7.1",
 		"babel-eslint": "^8.2.6",
 		"babel-loader": "^7.1.5",
 		"babel-plugin-transform-flow-strip-types": "^6.22.0",
