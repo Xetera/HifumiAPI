@@ -10,11 +10,11 @@ export const deployService = (app) => {
 			return res.status(403).end('Unauthorized');
 		}
 		const pathToScript = process.env.DEPLOYMENT_PATH;
-		console.log(pathToScript);
+		console.log('Got a deployment request');
 		if (!pathToScript) {
 			return res.status(500).end();
 		}
-		const child = exec(`bash ${pathToScript}`, console.log);
+		exec(`bash ${pathToScript}`, console.log);
 
 		// child.stdout.on('data', out => console.error(out.toString()));
 		// child.stderr.on('data', err => console.error(err.toString()));

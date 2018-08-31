@@ -1,6 +1,5 @@
 import bcrypt from 'bcryptjs';
-import { jwt } from 'jsonwebtoken';
-import { AuthError, signJwt } from '../../utils';
+import { signJwt } from '../../utils';
 
 export const authMutation = {
 	async signup(parent, { email, password, name }, ctx) {

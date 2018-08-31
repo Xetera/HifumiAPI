@@ -1,10 +1,12 @@
-
+import dotenv from 'dotenv';
 import { GraphQLServer } from 'graphql-yoga';
 import { Prisma } from 'prisma-binding';
 import { uploaderService } from './rest/uploader';
 import resolvers from './resolvers/resolvers';
 import { protectedEndpoints } from './modules/auth';
 import { deployService } from './rest/deploy';
+
+dotenv.config();
 
 const db = new Prisma({
 	typeDefs: 'src/generated/prisma.graphql', // the auto-generated GraphQL schema of the Prisma API
@@ -19,12 +21,17 @@ const server = new GraphQLServer({
 	resolvers,
 	endpoint: process.env.GRAPHQL_ENDPOINT,
 	middlewares: [protectedEndpoints],
-	context: req => ({ ...req, db }),
+	context: req => ({
+		...req,
+		db,
+	}),
 });
 
 uploaderService(server.express);
 deployService(server.express);
-server.start({ port: process.env.SERVER_PORT }, () => {
+server.start({
+	port: process.env.SERVER_PORT,
+}, () => {
 	console.log('Server started');
 	console.log('Server is running on http://localhost:4000');
 });
